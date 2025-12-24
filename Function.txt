@@ -7,17 +7,36 @@ After running the script all available checkboxes will be automatically selected
 */
 
 (function() {
-    // Select all checkboxes within the scopes container
+    // Select all checkboxes
     const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-    
-    let count = 0;
+    let checkedCount = 0;
+    let skippedCount = 0;
+
     checkboxes.forEach((cb) => {
-        // Only click if it is not already checked
+        // Skip if the checkbox is disabled or already checked
+        if (cb.disabled) {
+            skippedCount++;
+            return; 
+        }
+
         if (!cb.checked) {
+            // 1. Focus to simulate user navigation
+            cb.focus();
+            
+            // 2. Use .click() as it's the most reliable way to trigger React state updates
             cb.click();
-            count++;
+            
+            // 3. Manually dispatch change event as a backup for the UI state
+            cb.dispatchEvent(new Event('change', { bubbles: true }));
+            
+            checkedCount++;
         }
     });
 
-    console.log(`Success: Checked ${count} boxes.`);
+    console.log(`✅ Success: Checked ${checkedCount} enabled boxes.`);
+    console.log(`🚫 Skipped: ${skippedCount} disabled boxes (these cannot be toggled via script).`);
+    
+    if (checkedCount > 0) {
+        console.log("Check now if the 'Save' button is active.");
+    }
 })();
