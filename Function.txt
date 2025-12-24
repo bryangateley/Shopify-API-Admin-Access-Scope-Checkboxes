@@ -1,0 +1,23 @@
+/** Function to automatically check all API Admin Access Scope Checkboxes on Shopify Custom App Development Permissions Page
+- Install Custom App on Shopify
+- Navigate to Configuration Page (or click Configure Admin API Access on Overview Page)
+- Paste Script into Browser Console and Run
+
+After running the script all available checkboxes will be automatically selected. 
+*/
+
+(function() {
+    // Select all checkboxes within the scopes container
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    
+    let count = 0;
+    checkboxes.forEach((cb) => {
+        // Only click if it is not already checked
+        if (!cb.checked) {
+            cb.click();
+            count++;
+        }
+    });
+
+    console.log(`Success: Checked ${count} boxes.`);
+})();
